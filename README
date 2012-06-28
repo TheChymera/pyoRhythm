@@ -1,1 +1,11 @@
+Plot_It 0.0.1
+28.Jun.2012
+=======
+
 Python plotting and analysis tool for biorhythms.
+The script will at present only work under linux, requiring python-2.7 with scipy, numpy, and 
+matplotlib.
+
+Released under the GPLv2 licence.
+The project is led by Horea Christian (direct all correspondence to h.chr@mail.ru).
+
