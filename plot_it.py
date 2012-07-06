@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 __author__ = 'Horea Christian'
-#creates a linear time-based plot of thrice daily measured life satisfaction
+#creates a linear time-based plot of three daily life satisfaction measurements
 #and a superimposed log plot of daily measured social interactions
+#requires an input file reading Start:day.month.year (eg. Start:11.11.2011) on the first row
+#and three comma-separated values per row afterwards (1st - waking, 2nd - after waking, 3rd - before going to bed
+#4th - approaches, 5th - conversations)
 import gtk
 import numpy as np
 import matplotlib.dates as mdates
@@ -72,7 +75,7 @@ matplotlib.axis.Axis.zoom(ax1.xaxis, -0.4)
 ax1.plot(ts1, y1, 'y-', linewidth=2, alpha=0.7)
 ax1.plot(ts2, y2, 'c-', linewidth=2, alpha=0.7)
 ax1.plot(ts3, y3, 'm-', linewidth=2, alpha=0.7)
-legend(('Waking up', 'After Workout', 'Going to Bed'), 'upper left', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
+legend(('Waking up', 'After Waking', 'Going to Bed'), 'upper left', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
 ylabel('Self-Evaluated Satisfaction [1-10]', fontsize='12')
 
 ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%y'))
