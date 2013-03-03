@@ -50,12 +50,14 @@ y2 = [value for value in col[1] if not math.isnan(value)]
 y3 = [value for value in col[2] if not math.isnan(value)]
 y4 = [value for value in col[3] if not math.isnan(value)]
 y5 = [value for value in col[4] if not math.isnan(value)]
+y6 = [value for value in col[5] if not math.isnan(value)]
 
 x1 = [i for i, value in enumerate(col[0]) if not math.isnan(value)]
 x2 = [i for i, value in enumerate(col[1]) if not math.isnan(value)]
 x3 = [i for i, value in enumerate(col[2]) if not math.isnan(value)]
 x4 = [i for i, value in enumerate(col[3]) if not math.isnan(value)]
 x5 = [i for i, value in enumerate(col[4]) if not math.isnan(value)]
+x6 = [i for i, value in enumerate(col[5]) if not math.isnan(value)]
 
 ts1 = []
 for i in x1: ts1.append(date + datetime.timedelta(i))
@@ -67,6 +69,8 @@ ts4 = []
 for i in x4: ts4.append(date + datetime.timedelta(i))
 ts5 = []
 for i in x5: ts5.append(date + datetime.timedelta(i))
+ts6 = []
+for i in x6: ts6.append(date + datetime.timedelta(i))
 
 fig = figure(facecolor='#eeeeee')
 ax1 = fig.add_subplot(111)
@@ -85,11 +89,13 @@ fig.autofmt_xdate()
 
 ax2 = ax1.twinx()
 ax2.set_yscale('symlog')
-ax2.plot(ts4, y4, 'k-', linewidth=2, alpha=0.1)
+ax2.plot(ts4, y4, 'k-', linewidth=0, alpha=0.1)
 ax2.fill_between(ts4,y4,0.00001, color='k', alpha = 0.1)
-ax2.plot(ts5, y5, 'g-', linewidth=2, alpha=1)
-ax2.fill_between(ts5,y5,0.00001, color='g', alpha = 0.3)
-legend(('Approaches','Conversations'), 'upper right', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
+ax2.plot(ts5, y5, 'g-', linewidth=0, alpha=1)
+ax2.fill_between(ts5,y5,0.00001, color='g', alpha = 0.2)
+ax2.plot(ts6, y6, 'g-', linewidth=0, alpha=1)
+ax2.fill_between(ts6,y6,0.00001, color='g', alpha = 0.4)
+legend(('Approaches','Conversations','New Contacts'), 'upper right', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
 ylabel('Interaction #', fontsize='12')
 xlabel('Time [date]', fontsize='12')
 title('')
