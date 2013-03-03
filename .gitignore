@@ -34,7 +34,7 @@ image*.png
 #eclipse 
 .project
 .pydevproject
-.setting/*
+.settings/*
 
 #eclipse 
 .project
