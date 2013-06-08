@@ -9,6 +9,8 @@ import gtk
 import numpy as np
 import matplotlib.dates as mdates
 import itertools
+import pandas as pd
+from os import path
 from pylab import math, datetime, figure, tick_params, legend, xlabel, ylabel, title, matplotlib, show
 
 if gtk.pygtk_version < (2,3,90):
@@ -40,46 +42,20 @@ elif response == gtk.RESPONSE_CANCEL:
     print 'Closed, no files selected'
 dialog.destroy()
 
-data = np.genfromtxt(filename, skip_header=1, delimiter=",")
-data_raw = [line.strip().split() for line in open(filename)]
-date = datetime.datetime.strptime(''.join(data_raw[0]), 'Start:%d.%m.%Y')
-col=list(itertools.izip(*data))
+full_df = pd.read_csv(filename)
 
-y1 = [value for value in col[0] if not math.isnan(value)]
-y2 = [value for value in col[1] if not math.isnan(value)]
-y3 = [value for value in col[2] if not math.isnan(value)]
-y4 = [value for value in col[3] if not math.isnan(value)]
-y5 = [value for value in col[4] if not math.isnan(value)]
-y6 = [value for value in col[5] if not math.isnan(value)]
+start_date = datetime.datetime.strptime(path.split(filename)[1].split('_')[1], '%Y-%m-%d.csv')
+dates = []
+for i in range(len(full_df['Going to bed'])): dates.append(start_date + datetime.timedelta(i))
 
-x1 = [i for i, value in enumerate(col[0]) if not math.isnan(value)]
-x2 = [i for i, value in enumerate(col[1]) if not math.isnan(value)]
-x3 = [i for i, value in enumerate(col[2]) if not math.isnan(value)]
-x4 = [i for i, value in enumerate(col[3]) if not math.isnan(value)]
-x5 = [i for i, value in enumerate(col[4]) if not math.isnan(value)]
-x6 = [i for i, value in enumerate(col[5]) if not math.isnan(value)]
-
-ts1 = []
-for i in x1: ts1.append(date + datetime.timedelta(i))
-ts2 = []
-for i in x2: ts2.append(date + datetime.timedelta(i))
-ts3 = []
-for i in x3: ts3.append(date + datetime.timedelta(i))
-ts4 = []
-for i in x4: ts4.append(date + datetime.timedelta(i))
-ts5 = []
-for i in x5: ts5.append(date + datetime.timedelta(i))
-ts6 = []
-for i in x6: ts6.append(date + datetime.timedelta(i))
-
-fig = figure(facecolor='#eeeeee')
+fig = figure(facecolor='#eeeeee',  tight_layout=True)
 ax1 = fig.add_subplot(111)
 ax1.set_ylim(-0.7, 10.7)
 matplotlib.axis.Axis.zoom(ax1.xaxis, -0.4)
-ax1.plot(ts1, y1, 'y-', linewidth=2, alpha=0.7)
-ax1.plot(ts2, y2, 'c-', linewidth=2, alpha=0.7)
-ax1.plot(ts3, y3, 'm-', linewidth=2, alpha=0.7)
-legend(('Waking up', 'After Waking', 'Going to Bed'), 'upper left', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
+ax1.plot(dates, full_df['Waking up'], 'y-', linewidth=2, alpha=0.7)
+ax1.plot(dates, full_df['Woken up'], 'c-', linewidth=2, alpha=0.7)
+ax1.plot(dates, full_df['Going to bed'], 'm-', linewidth=2, alpha=0.7)
+legend(('Waking up', 'Woken up', 'Going to Bed'), 'upper left', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
 ylabel('Self-Evaluated Satisfaction [1-10]', fontsize='12')
 
 ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%y'))
@@ -89,15 +65,12 @@ fig.autofmt_xdate()
 
 ax2 = ax1.twinx()
 ax2.set_yscale('symlog')
-ax2.plot(ts4, y4, 'k-', linewidth=0, alpha=0.1)
-ax2.fill_between(ts4,y4,0.00001, color='k', alpha = 0.1)
-ax2.plot(ts5, y5, 'g-', linewidth=0, alpha=1)
-ax2.fill_between(ts5,y5,0.00001, color='g', alpha = 0.2)
-ax2.plot(ts6, y6, 'g-', linewidth=0, alpha=1)
-ax2.fill_between(ts6,y6,0.00001, color='g', alpha = 0.4)
-legend(('Approaches','Conversations','New Contacts'), 'upper right', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
+ax2.fill_between(dates, full_df['Very short approaches'],0.00001, color='k', alpha = 0.1)
+ax2.fill_between(dates, full_df['Indirect approaches'],0.00001, color='g', alpha = 0.2)
+ax2.fill_between(dates, full_df['Direct approaches'],0.00001, color='g', alpha = 0.4)
+ax2.fill_between(dates, full_df['Closes (physical)'],0.00001, color='r', alpha = 0.6)
+#~ legend(('Short Approaches','Indirect Approaches','Direct Approaches','Closes(physical)'), 'upper right', shadow=False, frameon=False, prop= matplotlib.font_manager.FontProperties(size='11'))
 ylabel('Interaction #', fontsize='12')
 xlabel('Time [date]', fontsize='12')
-title('')
+title(path.split(filename)[1].split('_')[0]+'\'s Life Satisfaction and Social Contacts Timeline.')
 show()
-#test

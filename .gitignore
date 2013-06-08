@@ -39,3 +39,6 @@ image*.png
 #eclipse 
 .project
 .pydevproject
+
+#geany
+*.sh
