@@ -3,7 +3,7 @@ __author__ = 'Horea Christian'
 #creates a linear time-based plot of three daily life satisfaction measurements
 #and a superimposed log plot of daily measured social interactions
 
-import gtk
+#~ import gtk #"import gtk" and "from pylab import" won't work together after updating some package (scipy?)
 import numpy as np
 import matplotlib.dates as mdates
 import itertools
