@@ -11,7 +11,7 @@ import pandas as pd
 from os import path
 from pylab import math, datetime, figure, tick_params, legend, xlabel, ylabel, title, matplotlib, show
 
-local_datapath = '~/data/shared'
+local_datapath = '~/data/'
 local_datapath = path.expanduser(local_datapath)
 
 if local_datapath:
